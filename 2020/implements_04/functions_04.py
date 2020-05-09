@@ -6,8 +6,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 
 def f_true(x):
-    y = 3*x**3 - 2*x**2 - 1*x**1 - 5
-#     y = x**2
+    y = x**2
     return y
 
 def data_generator(num, test_num=10, alpha=0, x_min=0, x_max=20, add=5):
