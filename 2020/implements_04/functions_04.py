@@ -6,8 +6,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 
 def f_true(x):
-#     y = 3*x**3 - 2*x**2 - 1*x**1
-    y = x**2
+    y = 3*x**3 - 2*x**2 - 1*x**1 - 5
+#     y = x**2
     return y
 
 def data_generator(num, test_num=10, alpha=0, x_min=0, x_max=20, add=5):
@@ -20,9 +20,9 @@ def data_generator(num, test_num=10, alpha=0, x_min=0, x_max=20, add=5):
     y = y + np.random.randn(*x.shape)*alpha
     return x, y, x_test, y_test
 
-def rmse(y_pred, y_true):
+def mse(y_pred, y_true):
     d = y_pred - y_true
-    return (np.mean(d**2))**(1/2)
+    return np.mean(d**2)
 
 def f(x, model):
     coef = np.reshape(model.coef_.reshape(-1), (1, -1))
@@ -42,10 +42,10 @@ def predict_polyreg(x, y, degree):
 def get_errors(pf, model, x, y, x_test, y_test):
     x_ = pf.fit_transform(x)
     y_pred = model.predict(x_)
-    train_error = rmse(y_pred, y)
+    train_error = mse(y_pred, y)
     x_ = pf.fit_transform(x_test)
     y_pred = model.predict(x_)
-    test_error = rmse(y_pred, y_test)
+    test_error = mse(y_pred, y_test)
     return train_error, test_error
 
 def coef_visualizer(model):
