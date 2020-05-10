@@ -2,10 +2,10 @@
 - This repo contains the lesson in GonKen
 ## Overviews
 ---
-1. Introduction 
+1. Introduction by Lucas
 2. Learning Algorithm
 3. How to Evaluate Your Model
-4. Overfitting and Underfitting
+4. Overfitting and Underfitting by Sho
 5. **Practice**: Overfitting and Underfitting
 6. Bias and Variance / Hyperparameter and Validation Set
 7. Maximum Likelihood Estimation
