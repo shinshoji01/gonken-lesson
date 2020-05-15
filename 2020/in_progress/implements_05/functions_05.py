@@ -48,18 +48,45 @@ def train_test_generation(r, alpha, train_num=500, test_num=1000):
     test = data_generation(1+min(train["large"].max(), np.abs(train["large"].min())), r, test_num, "test", 0)
     return train, test
 
-def get_poly(x, degree):
+def get_poly(x, degree=1):
     pf = PolynomialFeatures(degree=degree, include_bias=False)
     new_x = pf.fit_transform(x)
     return new_x
 
-def get_decision_boundary(model, train, test, degree=1, include_test=False):
+def train_model(train, test, C, kernel, degree):
+    X_train = train.drop("target", axis=1).values
+    y_train = train["target"].values
+    X_test = test.drop("target", axis=1).values
+    y_test = test["target"].values
+    
+    if kernel=="linear":
+        svm = SVC(kernel="linear", C=C)
+        degree = 1
+        X_train_ = get_poly(X_train, degree)
+    elif kernel=="poly":
+        svm = SVC(kernel="linear", C=C)
+        X_train_ = get_poly(X_train, degree)
+    elif kernel=="rbf":
+        svm = SVC(kernel="rbf", C=C)
+        degree = 1
+        X_train_ = get_poly(X_train, degree)
+    svm.fit(X_train_, y_train)
+    y_predict = svm.predict(get_poly(X_train, degree))
+    train_acc = accuracy_score(y_train, y_predict)
+    y_predict = svm.predict(get_poly(X_test, degree))
+    test_acc = accuracy_score(y_test, y_predict)
+    return svm, train, test, train_acc, test_acc
+
+def get_decision_boundary(model, train, test, kernel, degree=1, include_test=False):
     X_train = train.drop("target", axis=1).values
     x_min, x_max = X_train[:, 0].min() - 1, X_train[:, 0].max() + 1
     y_min, y_max = X_train[:, 1].min() - 1, X_train[:, 1].max() + 1
     xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1),
                          np.arange(y_min, y_max, 0.1))
-    Z = model.predict(get_poly(np.c_[xx.ravel(), yy.ravel()], degree))
+    if kernel=="poly":
+        Z = model.predict(get_poly(np.c_[xx.ravel(), yy.ravel()], degree))
+    else:
+        Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
     fig = plt.figure(figsize=(16, 8))
     ax = fig.add_subplot(1, 2, 1)
