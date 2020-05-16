@@ -100,6 +100,7 @@ def get_decision_boundary(model, train, test, kernel, degree=1, include_test=Fal
     ax.set_ylabel("y")
     plt.legend()
     ax.contour(xx, yy, Z, cmap=plt.cm.Paired)
+    ax.set_title("train dataset")
     if include_test:
         ax = fig.add_subplot(1, 2, 2)
         x1 = test[test.target==0].drop("target", axis=1).values
@@ -110,6 +111,7 @@ def get_decision_boundary(model, train, test, kernel, degree=1, include_test=Fal
         ax.set_ylabel("y")
         plt.legend()
         ax.contour(xx, yy, Z, cmap=plt.cm.Paired)
+        ax.set_title("test dataset")
     
     plt.show()
     return 
