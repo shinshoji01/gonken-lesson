@@ -36,7 +36,9 @@ def data_generation(r_max, r_min, num, mode="train", alpha=0):
     elif mode=="test":
         x1 = rectangle(num, r_max, r_min, "in")
         x2 = rectangle(int(num*(r_max/r_min)), r_max, r_min, "out")
+    np.random.seed(0)
     x1 = x1 + np.random.randn(*x1.shape)*alpha
+    np.random.seed(0)
     x2 = x2 + np.random.randn(*x2.shape)*alpha
     x1_target = np.concatenate([x1, np.zeros((1, x1.shape[1]))], axis=0)
     x2_target = np.concatenate([x2, np.ones((1, x2.shape[1]))], axis=0)
@@ -53,21 +55,21 @@ def get_poly(x, degree=1):
     new_x = pf.fit_transform(x)
     return new_x
 
-def train_model(train, test, C, kernel, degree):
+def train_model(train, test, C, kernel, degree, gamma=None):
     X_train = train.drop("target", axis=1).values
     y_train = train["target"].values
     X_test = test.drop("target", axis=1).values
     y_test = test["target"].values
     
     if kernel=="linear":
-        svm = SVC(kernel="linear", C=C)
+        svm = SVC(kernel="linear", C=C, random_state=0)
         degree = 1
         X_train_ = get_poly(X_train, degree)
     elif kernel=="poly":
-        svm = SVC(kernel="linear", C=C)
+        svm = SVC(kernel="linear", C=C, random_state=0)
         X_train_ = get_poly(X_train, degree)
     elif kernel=="rbf":
-        svm = SVC(kernel="rbf", C=C)
+        svm = SVC(kernel="rbf", C=C, gamma=gamma, random_state=0)
         degree = 1
         X_train_ = get_poly(X_train, degree)
     svm.fit(X_train_, y_train)
