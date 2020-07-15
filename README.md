@@ -16,7 +16,6 @@ Written by Inoue Sho, Nakano Lucas, and Jiawei Li.
 10. Gradient-Based Learning and SGD
 11. Backpropagation
 12. **Practice**: Neural Network Instruction with PyTorch
-13. Regularization 1
-14. Regularization 2
-15. **Practice**: Overfitting and Underfitting 
-16. **Practice**: Regularization
+13. Regularization
+14. **Practice**: Overfitting and Underfitting 
+15. **Practice**: Regularization
