@@ -17,5 +17,5 @@ Written by Inoue Sho, Nakano Lucas, and Jiawei Li.
 11. Backpropagation
 12. **Practice**: Neural Network Instruction with PyTorch
 13. Regularization
-14. **Practice**: Overfitting and Underfitting 
-15. **Practice**: Regularization
+14. **Practice**: Overfitting and Underfitting for Deep Learning
+15. **Practice**: Regularization for Deep Learning
