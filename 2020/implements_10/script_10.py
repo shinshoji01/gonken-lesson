@@ -18,6 +18,47 @@ def min_max(x, axis=None):
     return result
 
 
+class Flatten(nn.Module):
+    def __init__(self):
+        super(Flatten, self).__init__()
+
+    def forward(self, x):
+        return x.view(x.size(0), -1)
+    
+    
+def generate_edge_filter(vertical=True, device="cpu", nch=3):
+    edge_filter = nn.Conv2d(nch, nch, 3, 1, 1)
+    parameters = edge_filter.state_dict()
+    bias = torch.zeros(parameters["bias"].shape)
+    parameters["bias"] = bias
+    weight = np.array([[-1,-2,-1],[0,0,0],[1,2,1]])
+    if not vertical:
+        weight = weight.T
+    weight = np.tile(np.reshape(weight, (1,1,3,3)), (nch,nch,1,1))
+    parameters["weight"] = torch.tensor(weight)
+    edge_filter.load_state_dict(parameters)
+    return edge_filter.to(device)
+
+
+def generate_fc_edge_filter(vertical=True, nch=3, size=32):
+    weight = np.array([[-1,-2,-1],[0,0,0],[1,2,1]])
+    if not vertical:
+        weight = weight.T
+    fc_vertical_filter = nn.Linear(size**2*nch, size**2*nch)
+    parameters = fc_vertical_filter.state_dict()
+    bias = torch.zeros(parameters["bias"].shape)
+    parameters["bias"] = bias
+    for k in range(nch):
+        for i in range(size):
+            for j in range(size):
+                weights = np.zeros((size+2, size+2))
+                weights[i:i+nch, j:j+nch] = weight
+                weights = np.tile(np.resize(weights[1:-1,1:-1], (1, size, size)), (nch,1,1))
+                parameters["weight"][k*size**2+i*size+j] = torch.tensor(weights).view(-1)
+    fc_vertical_filter.load_state_dict(parameters)
+    return fc_vertical_filter
+
+
 def image_from_output(output):
     image_list = []
     output = output.detach().to("cpu").numpy()
