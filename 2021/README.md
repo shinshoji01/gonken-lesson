@@ -1,12 +1,13 @@
 ## Overview
-1. Researching
- - Searching for papers and study topics
- - ??
-2. Python 1
+1. Python 1
  - Data importing and preparation with Pandas
  - Simple plotting with Matplotlib
  - Introduction to Vim
-3. Python 2
+2. Python 2
+ - Image processing libraries: PIL, Opencv
+ - Sklearn
+ - Other useful python libraries
+3. Python 3
  - Importing datasets with Pytorch
  - Building, training and loading models with Pytorch
  - Building a model from a diagram or table with Pytorch
