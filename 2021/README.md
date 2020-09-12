@@ -2,7 +2,7 @@
 1. Python 1
  - Data importing and preparation with Pandas
  - Simple plotting with Matplotlib
- - Introduction to Vim
+
 2. Python 2
  - Image processing libraries: PIL, Opencv
  - Sklearn
@@ -37,3 +37,4 @@
 **Other topics**
  - GAN
  - Visualization techniques
+ - Introduction to Vim
