@@ -1,3 +1,7 @@
 .ipynb_checkpoints/
 __pycache__/
-
+instant_parameters/
+archive/
+fashion_dataset1/
+fashion_dataset2/
+fashion_dataset3/

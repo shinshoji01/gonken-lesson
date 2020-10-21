@@ -2,8 +2,8 @@
 
 ## 1st homework
 - due to **Nov. 11, 2020**
-- train your model with face_dataset3 at least 1 time.
-- you can use `01_classification.ipynb`, and make some comments on it.
+- train your model with face_dataset3 and evaluate your model with the test dataset in face_dataset1.
+- you can use `01_classification.ipynb`, and write down the accuracy and, if you can, you also can figure out why the accuracy was low/high.
 
 ## 2nd homework
 - due to **Nov. 18, 2020**
