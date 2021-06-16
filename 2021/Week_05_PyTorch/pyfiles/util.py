@@ -12,8 +12,32 @@ def min_max(x, mean0=False):
         result = result*2 - 1
     return result
 
-def image_from_numpy(output):
+def image_from_output(output):
+    """
+    convert torch.Tensor into PIL image
+
+    ------------
+    Parameters
+    ------------
+
+    output : torch.Tensor, shape=(sample_num, channel, length, width)
+        either cuda or cpu tensor
+        
+    ------------
+    Returns
+    ------------
+
+    image_list : list
+        list includes PIL images
+
+    ------------
+
+    """
+    if len(output.shape)==3:
+        output = output.unsqueeze(0)
+        
     image_list = []
+    output = cuda2numpy(output)
     for i in range(output.shape[0]):
         a = output[i]
         a = np.tile(np.transpose(a, axes=(1,2,0)), (1,1,int(3/a.shape[0])))
@@ -47,6 +71,26 @@ class MinMax(object):
 
     def __repr__(self):
         return self.__class__.__name__
+    
+def do_test(net, testloader, device="cuda", mode="eval"):
+    if mode=="train":
+        net.train()
+    elif mode=="eval":
+        net.eval()
+    else:
+        return None
+    labels = np.array([])
+    with torch.no_grad():
+        for itr, data in enumerate(testloader):
+            images = data[0].to(device)
+            label = cuda2numpy(data[1])
+            output = cuda2numpy(net(images))
+            if itr==0:
+                outputs = output
+            else:
+                outputs = np.concatenate([outputs, output], axis=0)
+            labels = np.append(labels, label)
+    return labels, outputs
         
 ############ https://www.kaggle.com/grfiv4/plot-a-confusion-matrix #############
 def plot_confusion_matrix(cm,
