@@ -2,6 +2,11 @@ import numpy as np
 from PIL import Image
 import glob
 import torch
+import torchvision.transforms as transforms
+
+transform_original = transforms.Compose([
+    transforms.ToTensor(),
+])
 
 def cuda2numpy(x):
     return x.detach().to("cpu").numpy()
